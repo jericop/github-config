@@ -29,6 +29,8 @@ runs:
       set -euo pipefail
       shopt -s inherit_errexit
 
+      echo "yay"
+
       packages=$(jq  '.components[] |  .name' "${{ inputs.build_receipt }}" "${{ inputs.run_receipt }}" \
         | jq --null-input --compact-output '[inputs]')
 
