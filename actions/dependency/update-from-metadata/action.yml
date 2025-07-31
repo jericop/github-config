@@ -52,6 +52,8 @@ runs:
       #!/usr/bin/env bash
       set -euo pipefail
       shopt -s inherit_errexit
+      # TODO: remove this before PR
+      jam version
       versions="$(
         jam update-dependencies \
           --buildpack-file "${{ inputs.buildpack_toml_path }}" \
