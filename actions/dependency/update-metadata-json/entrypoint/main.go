@@ -67,9 +67,11 @@ func main() {
 	// Find the dependency of interest and update the checksum
 	found := false
 	for _, dependency := range entries {
-		targetVersionMatches := dependency.Target == config.Target && dependency.Version == config.Version
-		platformMatches := dependency.OS == config.OS && dependency.Arch == config.Arch
-		if targetVersionMatches && platformMatches {
+		osMustMatch := config.OS != ""
+		archMustMatch := config.Arch != ""
+		osMatches := !osMustMatch || dependency.OS == config.OS
+		archMatches := !archMustMatch || dependency.Arch == config.Arch
+		if dependency.Target == config.Target && dependency.Version == config.Version && osMatches && archMatches {
 			dependency.Checksum = config.Checksum
 			dependency.URI = config.URI
 			found = true
