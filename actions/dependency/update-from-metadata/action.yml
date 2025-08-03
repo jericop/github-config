@@ -20,30 +20,57 @@ runs:
   using: 'composite'
   steps:
 
-  - name: Choose Jam Version
+  - name: Check out code
+    uses: actions/checkout@v4
+    path: 'jericop-jam'
+    repository: 'jericop/jam'
+    ref: 'update-dependencies-multi-arch'
+
+  - name: Setup Go
+    uses: actions/setup-go@v5
+    with:
+      go-version: 'stable'
+
+  - name: Build and install jam from source
     id: version
     shell: bash
     run: |
       #!/usr/bin/env bash
       set -euo pipefail
       shopt -s inherit_errexit
-      version=$(jq -r .jam "scripts/.util/tools.json")
-      echo "version=${version#v}" >> "$GITHUB_OUTPUT"
-
-  - name: Install Jam
-    shell: bash
-    run: |
-      #!/usr/bin/env bash
-      set -euo pipefail
-      shopt -s inherit_errexit
+      cd jericop-jam
+      ./scripts/package.sh --version 9.9.9
+      echo "version=9.9.9" >> "$GITHUB_OUTPUT"
       mkdir -p "${HOME}"/bin
       echo "PATH=${HOME}/bin:${PATH}" >> "${GITHUB_ENV}"
       mkdir -p "${HOME}/bin"
-      curl "https://github.com/paketo-buildpacks/jam/releases/download/v${{ steps.version.outputs.version }}/jam-linux" \
-        --silent \
-        --location \
-        --output "${HOME}/bin/jam"
+      cp "jericop-jam/build/jam-linux" "${HOME}/bin/jam"
       chmod +x "${HOME}/bin/jam"
+
+  # - name: Choose Jam Version
+  #   id: version
+  #   shell: bash
+  #   run: |
+  #     #!/usr/bin/env bash
+  #     set -euo pipefail
+  #     shopt -s inherit_errexit
+  #     version=$(jq -r .jam "scripts/.util/tools.json")
+  #     echo "version=${version#v}" >> "$GITHUB_OUTPUT"
+
+  # - name: Install Jam
+  #   shell: bash
+  #   run: |
+  #     #!/usr/bin/env bash
+  #     set -euo pipefail
+  #     shopt -s inherit_errexit
+  #     mkdir -p "${HOME}"/bin
+  #     echo "PATH=${HOME}/bin:${PATH}" >> "${GITHUB_ENV}"
+  #     mkdir -p "${HOME}/bin"
+  #     curl "https://github.com/paketo-buildpacks/jam/releases/download/v${{ steps.version.outputs.version }}/jam-linux" \
+  #       --silent \
+  #       --location \
+  #       --output "${HOME}/bin/jam"
+  #     chmod +x "${HOME}/bin/jam"
 
   - name: Update Dependencies From Metadata
     shell: bash
