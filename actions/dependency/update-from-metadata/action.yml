@@ -24,7 +24,7 @@ runs:
     uses: actions/checkout@v4
     with:
       repository: 'jericop/jam'
-      ref: 'update-dependencies-multi-arch'
+      ref: 'multi-arch-testing'
       path: 'jericop-jam'
 
   - name: Setup Go
@@ -45,7 +45,7 @@ runs:
       mkdir -p "${HOME}"/bin
       echo "PATH=${HOME}/bin:${PATH}" >> "${GITHUB_ENV}"
       mkdir -p "${HOME}/bin"
-      cp "jericop-jam/build/jam-linux" "${HOME}/bin/jam"
+      cp "build/jam-linux" "${HOME}/bin/jam"
       chmod +x "${HOME}/bin/jam"
 
   # - name: Choose Jam Version
