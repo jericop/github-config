@@ -22,9 +22,10 @@ runs:
 
   - name: Check out code
     uses: actions/checkout@v4
-    path: 'jericop-jam'
-    repository: 'jericop/jam'
-    ref: 'update-dependencies-multi-arch'
+    with:
+      repository: 'jericop/jam'
+      ref: 'update-dependencies-multi-arch'
+      path: 'jericop-jam'
 
   - name: Setup Go
     uses: actions/setup-go@v5
