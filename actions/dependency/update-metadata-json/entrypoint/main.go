@@ -70,7 +70,7 @@ func main() {
 		osMustMatch := config.OS != ""
 		archMustMatch := config.Arch != ""
 		osMatches := !osMustMatch || dependency.OS == config.OS
-		archMatches := !archMustMatch || dependency.Arch == config.Arch
+		archMatches := (!osMustMatch && !archMustMatch) || dependency.Arch == config.Arch
 		if dependency.Target == config.Target && dependency.Version == config.Version && osMatches && archMatches {
 			dependency.Checksum = config.Checksum
 			dependency.URI = config.URI
