@@ -1,4 +1,4 @@
-module github.com/joshuatcasey/bundler/actions/update-json/entrypoint
+module github.com/paketo-buildpacks/github-config/actions/dependency/update-metadata-json/entrypoint
 
 go 1.24.5
 
